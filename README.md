@@ -13,7 +13,7 @@ Making it concurrent was a challenging and enlightening experience.
 
 ## Installation
 - Ask to be a collaborator
-- git clone (this repo)
+- `git clone https://acad.learn2earn.ng/git/oifaraji/ascii-art.git`
 
 ## Usage
 - Change directory to the `ascii-art` folder
