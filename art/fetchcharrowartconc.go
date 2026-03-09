@@ -23,7 +23,7 @@ func fetchCharRowArtConc(char byte, position [2]int, ch chan charRowArt) {
 		panic("control characters are illegal except newlines")
 	}
 	charIndex := int(char - 32)
-	bannerLinePosition := 1 + position[1] + charIndex + charIndex*8
+	bannerLinePosition := 1 + position[1] + charIndex*9
 	offset := banners.BannerLineIndex[bannerLinePosition]
 	linelength := banners.BannerLineIndex[bannerLinePosition+1] - offset - 1
 	rowArt := make([]byte, linelength)
