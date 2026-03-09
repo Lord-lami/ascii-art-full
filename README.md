@@ -11,6 +11,8 @@ Command characters apart from newlines will cause panics.
 
 Making it concurrent was a challenging and enlightening experience.
 
+I hope to be able to expand the project to more than just ASCII characters.
+
 ## Installation
 - Ask to be a collaborator
 - `git clone https://acad.learn2earn.ng/git/oifaraji/ascii-art.git`
