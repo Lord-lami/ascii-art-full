@@ -1,0 +1,36 @@
+ _    _          _   _                 _______   _                           $
+| |  | |        | | | |               |__   __| | |                          $
+| |__| |   ___  | | | |   ___            | |    | |__     ___   _ __    ___  $
+|  __  |  / _ \ | | | |  / _ \           | |    |  _ \   / _ \ | '__|  / _ \ $
+| |  | | |  __/ | | | | | (_) |          | |    | | | | |  __/ | |    |  __/ $
+|_|  |_|  \___| |_| |_|  \___/           |_|    |_| |_|  \___| |_|     \___| $
+                                                                             $
+                                                                             $
+
+
+
+ascii-art("Hello There") | cat -e
+
+concepts - characters, maps, banner file, table, art
+skills - file reading, looping, mapping, segmentation
+tools - custom types, io
+techniques - concurrency, iteration, functions
+strategies - concurrent io
+assessment - 
+            concurrent io
+memory-cost routineMemory*len(inputString)
+time-cost   O(n/n)
+clarity     Straight-Forward
+novelty     still new
+
+solution - concurrent io
+1. concurrently read the neccesary banner file for the art of the characters
+2. channel all the art into a result holder
+3. print the output
+    requirements: a table of characters and the position of their art in the banner file.
+    the requirement has been met because the table is the ascii table.
+
+implementation - concurrent io
+1. concurrently read the neccesary banner file for the row art of the characters in a line
+2. print all eight rows of art for each line
+3. print all lines for the text.
