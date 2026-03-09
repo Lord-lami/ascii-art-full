@@ -23,7 +23,7 @@ I hope to be able to expand the project to more than just ASCII characters.
 - To use a style other than the standard style. 
 - - Ensure that the banner file of the style is in the `banners` folder as a `.txt` file.
 - - Ensure the banner file is formatted properly as described in the project description.
-- - Run `go run . <sample text> <style banner file name without .txt`
+- - Run `go run . <sample text> <style banner file name without .txt>`
 
 ## Examples
 ### Basic Usage
