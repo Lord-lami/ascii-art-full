@@ -6,10 +6,14 @@ import (
 	"strings"
 )
 
+// PaintSubstring takes a string str, a substring subStr and a color string.
+// It returns the art of the str with all matches of subStr painted in the 
+// specified color.
 func PaintSubstring(str, subStr, color string) string {
 	paintBrush := brush(color)
 	reset := "\033[0m"
 
+	// Invalid brush calls return "" empty strings
 	if paintBrush == "" {
 		return ""
 	}
@@ -31,6 +35,7 @@ func PaintSubstring(str, subStr, color string) string {
 	segmentArt := ""
 	var continuation func(string) string
 
+	// If the first character of str is part of subStr
 	if len(positions) > 0 && positions[0][0] == 0 {
 		segment = str[positions[0][0]:positions[0][1]]
 		segmentArt, continuation = art.GetSegmentArt(segment, continuation)

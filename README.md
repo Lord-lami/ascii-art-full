@@ -1,5 +1,5 @@
-# ASCII Art
-Ascii Art is a CLI program written in Go Language that draws the ASCII art of the ASCII text you pass to it as an argument.
+# ASCII Art Color
+Ascii Art Color is a CLI program written in Go Language that draws the ASCII art of the ASCII text you pass to it as an argument and colors the substring you can optionally provide.
 
 It uses only the standard libraries of Go language. 
 
@@ -9,21 +9,21 @@ It only works for ASCII characters. Unicode characters beyond the [ASCII table](
 
 Command characters apart from newlines will cause panics.
 
-Making it concurrent was a challenging and enlightening experience.
+Making it iterative, character by character drawing, with ANSI Control Sequences was a novel experience.
 
 I hope to be able to expand the project to more than just ASCII characters.
 
 ## Installation
 - Ask to be a collaborator
-- `git clone https://acad.learn2earn.ng/git/oifaraji/ascii-art.git`
+- `git clone https://acad.learn2earn.ng/git/obolarinw/ascii-art-color.git`
 
 ## Usage
-- Change directory to the `ascii-art` folder
-- Run `go run . <sample text>` in the terminal
+- Change directory to the `ascii-art-color` folder
+- Run `go run . --color=<color>OPTIONAL <substring to be colored>OPTIONAL <text to draw>` in the terminal
 - To use a style other than the standard style. 
 - - Ensure that the banner file of the style is in the `banners` folder as a `.txt` file.
 - - Ensure the banner file is formatted properly as described in the project description.
-- - Run `go run . <sample text> <style banner file name without .txt>`
+- - Run `go run . --color=<color>OPTIONAL <substring to be colored>OPTIONAL <text to draw> <style banner file name without .txt>OPTIONAL`
 
 ## Examples
 ### Basic Usage

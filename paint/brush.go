@@ -2,6 +2,11 @@ package paint
 
 import "strings"
 
+// brush accepts a color string.
+// The color string must be one of: black, red, green, yellow, blue, magenta, cyan, white, default.
+//
+// It returns an ANSI Control Sequence that changes the color of the following text to the color
+// specified by the string.
 func brush(color string) string {
 	color = strings.ToLower(color)
 	colorBrush := "\033["
@@ -22,7 +27,7 @@ func brush(color string) string {
 		return colorBrush + "36m"
 	case "white":
 		return colorBrush + "37m"
-	case "default":
+	case "default", "default0":
 		return colorBrush + "39m"
 	default:
 		return ""
