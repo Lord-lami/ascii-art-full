@@ -1,36 +1,24 @@
- _    _          _   _                 _______   _                           $
-| |  | |        | | | |               |__   __| | |                          $
-| |__| |   ___  | | | |   ___            | |    | |__     ___   _ __    ___  $
-|  __  |  / _ \ | | | |  / _ \           | |    |  _ \   / _ \ | '__|  / _ \ $
-| |  | | |  __/ | | | | | (_) |          | |    | | | | |  __/ | |    |  __/ $
-|_|  |_|  \___| |_| |_|  \___/           |_|    |_| |_|  \___| |_|     \___| $
-                                                                             $
-                                                                             $
+Problem: Create a version of ascii-art that accepts color options and a substring argument for the substring to be colored
 
-
-
-ascii-art("Hello There") | cat -e
-
-concepts - characters, maps, banner file, table, art
-skills - file reading, looping, mapping, segmentation
-tools - custom types, io
-techniques - concurrency, iteration, functions
-strategies - concurrent io
+concepts - characters, ANSI control sequences, substrings, flags
+skills - looping, selective addition, searching
+tools - regex, ANSI CSIs
+techniques - cursor shifting, text coloring
+strategies - character by character iterative art printing and coloring
 assessment - 
-            concurrent io
-memory-cost routineMemory*len(inputString)
-time-cost   O(n/n)
-clarity     Straight-Forward
-novelty     still new
+            
+memory-cost O(1)
+time-cost   O(n)
+clarity     Foggy: understanding of ANSI is neccesary
+novelty     Novel
 
-solution - concurrent io
-1. concurrently read the neccesary banner file for the art of the characters
-2. channel all the art into a result holder
-3. print the output
-    requirements: a table of characters and the position of their art in the banner file.
-    the requirement has been met because the table is the ascii table.
+solution - character by character iterative art printing and coloring
+1. Find the position (start, stop) of the substring in the string, if the string was given exists.
+2. In the new color printer, add a color changer at the start and a reset at the stop
+3, Print the colored string
+    requirement - an ascii-art program that iteratively draws the art of each character must be made
 
-implementation - concurrent io
+implementation - 
 1. concurrently read the neccesary banner file for the row art of the characters in a line
 2. print all eight rows of art for each line
 3. print all lines for the text.

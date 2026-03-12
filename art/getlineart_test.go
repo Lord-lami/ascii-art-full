@@ -8,7 +8,7 @@ import (
 )
 
 func TestGetLineArt(t *testing.T) {
-	const functionName = "GetLineArt"
+	const functionName = "getLineArt"
 	type record struct {
 		testParameters struct {
 			line string
@@ -20,16 +20,7 @@ func TestGetLineArt(t *testing.T) {
 
 	// 1st test parameters
 	test.testParameters.line = "xyz"
-	test.want =
-		`                     
-                     
-__  __  _   _   ____ 
-\ \/ / | | | | |_  / 
- >  <  | |_| |  / /  
-/_/\_\  \__, | /___| 
-        __/ /        
-       |___/         
-`
+	test.want = "       \n       \n__  __ \n\\ \\/ / \n >  <  \n/_/\\_\\ \n       \n       \n\x1b[8A\x1b[7C        \x1b[B\x1b[8D        \x1b[B\x1b[8D _   _  \x1b[B\x1b[8D| | | | \x1b[B\x1b[8D| |_| | \x1b[B\x1b[8D \\__, | \x1b[B\x1b[8D __/ /  \x1b[B\x1b[8D|___/   \n\x1b[8A\x1b[15C      \x1b[B\x1b[6D      \x1b[B\x1b[6D ____ \x1b[B\x1b[6D|_  / \x1b[B\x1b[6D / /  \x1b[B\x1b[6D/___| \x1b[B\x1b[6D      \x1b[B\x1b[6D      \n"
 	tests = append(tests, test)
 
 	// Setup
@@ -43,14 +34,15 @@ __  __  _   _   ____
 	banners.SetBannerLineIndex()
 
 	for _, test := range tests {
-		result := GetLineArt(
-			&test.testParameters.line,
+		first, rest := getLineArt(
+			test.testParameters.line,
 		)
+		result := first + rest("")
 		if result != test.want {
-			t.Errorf("%v(%v) = \n%q\n want \n\"%s\"",
+			t.Errorf("%v(%v) = \n\"%#v\"\n want \n\"%#v\"",
 				functionName, test.testParameters, result, test.want)
 		} else {
-			t.Logf("Passed: %v(%v) = \"%s\"",
+			t.Logf("Passed: %v(%v) = \n\"%s\"",
 				functionName, test.testParameters, result)
 		}
 	}

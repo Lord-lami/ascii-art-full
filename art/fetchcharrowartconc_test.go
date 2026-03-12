@@ -7,13 +7,11 @@ import (
 	"testing"
 )
 
-func TestFetchCharRowArtConc(t *testing.T) {
-	const functionName = "FetchCharRowArtConc"
+func TestFetchCharArt(t *testing.T) {
+	const functionName = "fetchCharArt"
 	type record struct {
 		testParameters struct {
-			char     byte
-			position [2]int
-			ch       chan charRowArt
+			char byte
 		}
 		want string
 	}
@@ -22,9 +20,15 @@ func TestFetchCharRowArtConc(t *testing.T) {
 
 	// 1st test parameters
 	test.testParameters.char = 'A'
-	test.testParameters.position = [2]int{0, 1}
-	test.testParameters.ch = make(chan charRowArt)
-	test.want = `    /\     `
+	test.want = `           
+    /\     
+   /  \    
+  / /\ \   
+ / ____ \  
+/_/    \_\ 
+           
+           
+`
 	tests = append(tests, test)
 
 	// Setup
@@ -38,20 +42,15 @@ func TestFetchCharRowArtConc(t *testing.T) {
 	banners.SetBannerLineIndex()
 
 	for _, test := range tests {
-		go fetchCharRowArtConc(
+		result, _ := fetchCharArt(
 			test.testParameters.char,
-			test.testParameters.position,
-			test.testParameters.ch,
 		)
-		result := <-test.testParameters.ch
-		close(test.testParameters.ch)
-		resultStr := string(result.RowArt)
-		if resultStr != test.want {
+		if string(result) != test.want {
 			t.Errorf("%v(%v) = %q want %q",
-				functionName, test.testParameters, resultStr, test.want)
+				functionName, test.testParameters, result, test.want)
 		} else {
 			t.Logf("Passed: %v(%v) = %q",
-				functionName, test.testParameters, result.RowArt)
+				functionName, test.testParameters, result)
 		}
 	}
 }

@@ -1,37 +1,49 @@
 package main
 
 import (
-	"asciiart/art"
 	"asciiart/banners"
+	"asciiart/paint"
+	"flag"
 	"fmt"
 	"log"
 	"os"
-	"strings"
 )
 
 func main() {
-	args := os.Args[1:]
+	usage := `Usage: go run . [OPTION] [STRING]
 
+EX: go run . --color=<color> <substring to be colored> "something"`
+	color := flag.String("color", "default", usage)
+	flag.Parse()
+	args := flag.Args()
+
+	subStr := ""
+	str := ""
+	switch {
 	// If a style is specified
-	if len(args) > 1 {
-		bannerFilePath := "./banners/" + args[1] + ".txt"
+	case len(args) > 2:
+		bannerFilePath := "./banners/" + args[2] + ".txt"
 
 		// Check that a file for it exists and set it.
 		var err error
 		if banners.BannerFile, err = os.Open(bannerFilePath); err != nil {
 			log.Fatal("there is no " + args[1] + " banner style file")
 		}
-	}
-
-	if len(args) < 1 {
+		fallthrough
+	case len(args) == 2:
+		subStr = args[0]
+		str = args[1]
+	case len(args) == 1:
+		str = args[0]
+	case len(args) < 1:
 		log.Fatal("there is no text to draw")
 	}
 
-	if args[0] == "" {
+	if str == "" {
 		return
 	}
 
-	if args[0] == "\\n" {
+	if str == "\\n" {
 		fmt.Println()
 		return
 	}
@@ -39,12 +51,14 @@ func main() {
 	defer banners.BannerFile.Close()
 	banners.SetBannerLineIndex()
 
-	text := strings.Split(args[0], "\\n")
-	for _, line := range text {
-		if line != "" {
-			fmt.Print(art.GetLineArt(&line))
-		} else {
-			fmt.Println()
-		}
+	coloredTextArt := paint.PaintSubstring(str, subStr, *color)
+	if coloredTextArt == "" {
+		log.Fatal("color must be one of: black, red, green, yellow, blue, magenta, cyan, white, default")
 	}
+	fmt.Print(coloredTextArt)
 }
+
+// func main() {
+// 	tA, _ := art.GetTextArt("BEANS")
+// 	fmt.Print(tA)
+// }
