@@ -25,22 +25,34 @@ I hope to be able to expand the project to more than just ASCII characters.
 - - Ensure the banner file is formatted properly as described in the project description.
 - - Run `go run . --color=<color>OPTIONAL <substring to be colored>OPTIONAL <text to draw> <style banner file name without .txt>OPTIONAL`
 
-## Examples
+- The program gives an error if there is no text or if the color is invalid.
+- The valid colors are: black, red, green, yellow, blue, magenta, cyan, white, default
+
+## Demo
 ### Basic Usage
-![Example of how the program runs without newlines and without special sytle](test(1).png)
+![Demonstration of how the program runs with one argument](./demo_images/image.png)
 
-### With Newline
-![Example of how the program runs with newlines without special style](test(2).png)
+### With two arguments (text and banner style)
+![Demonstration of how the program runs with two arguments. "Text" text first and "shadow" banner style ](./demo_images/image-1.png)
 
-### With Special Style
-![Example of how the program runs with newlines and with special style](test(3).png)
+### With color flag and text argument
+![Demonstration of how the program runs with  color flag = red and a single text argument](./demo_images/image-2.png)
+
+### With color flag, substring and text containing the substring
+![Demonstration of how the program runs with color flag = red, a substring and a text containing the substring](./demo_images/image-3.png)
+
+### With color flag, substring and text that doesn't contain the substring
+![Demonstration of how the program runs with color flag = red, a substring and a text that doesn't contain the substring](./demo_images/image-4.png)
+
+### With color flag, substring, text containing the substring and banner style, shadow
+![Demonstration of how the program runs with color flag = yellow, a substring, a text that contains the substring and a banner style, shadow](./demo_images/image-5.png)
 
 ## Credits
-- Me (Developer)
-- Myself (Tester)
-- I (Contributor)
+- [Olamide Ifarajimi](https://acad.learn2earn.ng/git/oifaraji) (Developer)
+- [Opeoluwa Adekunle](https://acad.learn2earn.ng/git/oadekunle) (Tester)
+- [Oladimeji Bolarinwa](https://acad.learn2earn.ng/git/obolarinw) (Team Lead)
 
 ## License
-Copyright © 2026 [Olamide Ifarajimi](https://acad.learn2earn.ng/git/oifaraji)
+Copyright © 2026
 
 This Project is [GPL](https://www.gnu.org/licenses/gpl-3.0.en.html) Licensed
