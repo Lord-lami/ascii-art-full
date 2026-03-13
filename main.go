@@ -13,6 +13,10 @@ func main() {
 	usage := `Usage: go run . [OPTION] [STRING]
 
 EX: go run . --color=<color> <substring to be colored> "something"`
+	// Patch for --color usage
+	if os.Args[1] == "--color" || os.Args[1] == "-color" {
+		log.Fatal(usage)
+	}
 	color := flag.String("color", "default0", usage)
 	flag.Parse()
 	args := flag.Args()
