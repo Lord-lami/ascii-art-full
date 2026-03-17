@@ -7,8 +7,8 @@ import (
 	"testing"
 )
 
-func TestFetchCharArt(t *testing.T) {
-	const functionName = "fetchCharArt"
+func TestDrawCharArt(t *testing.T) {
+	const functionName = "drawCharArt"
 	type record struct {
 		testParameters struct {
 			char byte
@@ -27,8 +27,7 @@ func TestFetchCharArt(t *testing.T) {
  / ____ \  
 /_/    \_\ 
            
-           
-`
+           `
 	tests = append(tests, test)
 
 	// Setup
@@ -42,7 +41,7 @@ func TestFetchCharArt(t *testing.T) {
 	banners.SetBannerLineIndex()
 
 	for _, test := range tests {
-		result, _ := fetchCharArt(
+		result, _ := drawCharArt(
 			test.testParameters.char,
 		)
 		if string(result) != test.want {

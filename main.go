@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -14,7 +15,7 @@ func main() {
 
 EX: go run . --color=<color> <substring to be colored> "something"`
 	// Patch for --color usage
-	if os.Args[1] == "--color" || os.Args[1] == "-color" {
+	if len(os.Args) > 1 && (os.Args[1] == "--color" || os.Args[1] == "-color") {
 		log.Fatal(usage)
 	}
 	color := flag.String("color", "default0", usage)
@@ -61,10 +62,16 @@ EX: go run . --color=<color> <substring to be colored> "something"`
 
 	defer banners.BannerFile.Close()
 	banners.SetBannerLineIndex()
-
-	coloredTextArt := paint.PaintSubstring(str, subStr, *color)
+	str = strings.ReplaceAll(str, "\\n", "\n")
+	coloredTextArt := paint.PaintSubstring(str, subStr, *color, 0, len(str))
 	if coloredTextArt == "" {
 		log.Fatal("color must be one of: black, red, green, yellow, blue, magenta, cyan, white, default")
 	}
-	fmt.Print(coloredTextArt)
+	fmt.Println(coloredTextArt)
 }
+
+// func main() {
+// 	defer banners.BannerFile.Close()
+// 	banners.SetBannerLineIndex()
+// 	fmt.Println(justify.Center("Tetst\nTest\n\nTest2", "t\n", "Blue"))
+// }

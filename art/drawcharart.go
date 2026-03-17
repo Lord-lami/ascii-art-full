@@ -5,19 +5,23 @@ import (
 	"asciiart/banners"
 )
 
-// fetchCharArt fetches the art of a character, char
-// in banner file:
-//
+// drawCharArt draws the art of a character, char
+// from banner file:
 //	banners.BannerFile
-func fetchCharArt(char byte) ([]byte, int) {
+// and returns the art as a slice of [byte] and the 
+// width of the art as an [int]
+func drawCharArt(char byte) ([]byte, int) {
+	if char == '\n' {
+		return []byte{'\n'}, 0
+	}
 	charIndex := int(char - 32)
 	bannerLinePosition := 1 + charIndex*9
 	charArt := []byte{}
-	lineLength := banners.BannerLineIndex[bannerLinePosition+1] -
+	charArtLength := banners.BannerLineIndex[bannerLinePosition+1] -
 		banners.BannerLineIndex[bannerLinePosition]
 	for range 8 {
 		offset := banners.BannerLineIndex[bannerLinePosition]
-		rowArt := make([]byte, lineLength)
+		rowArt := make([]byte, charArtLength)
 		_, err := banners.BannerFile.ReadAt(rowArt, offset)
 		if err != nil {
 			panic(err)
@@ -25,5 +29,5 @@ func fetchCharArt(char byte) ([]byte, int) {
 		charArt = append(charArt, rowArt...)
 		bannerLinePosition++
 	}
-	return charArt, int(lineLength - 1)
+	return charArt[:len(charArt)-1], int(charArtLength - 1)
 }

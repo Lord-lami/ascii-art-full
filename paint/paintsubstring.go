@@ -7,68 +7,50 @@ import (
 )
 
 // PaintSubstring takes a string str, a substring subStr and a color string.
-// It returns the art of the str with all matches of subStr painted in the 
+// It returns the art of the str with all matches of subStr painted in the
 // specified color.
-func PaintSubstring(str, subStr, color string) string {
+func PaintSubstring(str, subStr, color string, start, stop int) string {
 	paintBrush := brush(color)
 	reset := "\033[0m"
 
-	// Invalid brush calls return "" empty strings
-	if paintBrush == "" {
-		return ""
-	}
-
 	var b strings.Builder
+	drawStrArt := art.CommissionArtist(str)
+	subStr = strings.ReplaceAll(subStr, "\\n", "\n")
+	// drawStrArt := art.DrawTextArt(str, 0, len(str))
 
 	if subStr == "" || str == subStr {
 		b.WriteString(paintBrush)
-		textArt, _ := art.GetSegmentArt(str, nil)
-		b.WriteString(textArt)
+		b.WriteString(drawStrArt(start, stop))
 		b.WriteString(reset)
 		return b.String()
 	}
 
 	subStrRe := regexp.MustCompile(regexp.QuoteMeta(subStr))
 	positions := subStrRe.FindAllStringIndex(str, -1)
-	previousIndex := 0
-	segment := ""
-	segmentArt := ""
-	var continuation func(string) string
+	previousIndex := start
 
-	// If the first character of str is part of subStr
-	if len(positions) > 0 && positions[0][0] == 0 {
-		segment = str[positions[0][0]:positions[0][1]]
-		segmentArt, continuation = art.GetSegmentArt(segment, continuation)
-		b.WriteString(paintBrush)
-		b.WriteString(segmentArt)
-		b.WriteString(reset)
-		previousIndex = positions[0][1]
-		positions = positions[1:]
-	}
-	if len(positions) > 0 && positions[0][0] != 0 {
-		segment = str[previousIndex:positions[0][0]]
-		segmentArt, continuation = art.GetSegmentArt(segment, continuation)
-		b.WriteString(segmentArt)
-		previousIndex = positions[0][0]
-	}
-
-	for i, position := range positions {
-		segment = str[previousIndex:position[1]]
-		segmentArt, continuation = art.GetSegmentArt(segment, continuation)
-		b.WriteString(paintBrush)
-		b.WriteString(segmentArt)
-		b.WriteString(reset)
-		previousIndex = position[1]
-
-		if i+1 < len(positions) {
-			segment = str[previousIndex:positions[i+1][0]]
-			segmentArt, continuation = art.GetSegmentArt(segment, continuation)
-			b.WriteString(segmentArt)
-			previousIndex = positions[i+1][0]
+	for _, position := range positions {
+		if position[0] > stop {
+			break
 		}
+		if position[0] < start {
+			position[0] = start
+		}
+		if position[1] > stop {
+			position[1] = stop
+		}
+		if position[1] < start {
+			break
+		}
+		b.WriteString(drawStrArt(previousIndex, position[0]))
+
+		b.WriteString(paintBrush)
+		b.WriteString(drawStrArt(position[0], position[1]))
+		b.WriteString(reset)
+
+		previousIndex = position[1]
 	}
-	segment = str[previousIndex:]
-	segmentArt, _ = art.GetSegmentArt(segment, continuation)
-	b.WriteString(segmentArt)
+
+	b.WriteString(drawStrArt(previousIndex, stop))
 	return b.String()
 }
