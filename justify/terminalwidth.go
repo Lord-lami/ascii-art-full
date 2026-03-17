@@ -1,4 +1,4 @@
-// Package justify provides tools for justifying/arranging/aligning 
+// Package justify provides tools for justifying/arranging/aligning
 // the art of a text on the terminal.
 package justify
 
@@ -14,8 +14,8 @@ type winsize struct {
 	Ypixel uint16
 }
 
-// terminalWidth returns the current width of the terminal.
-func terminalWidth() (width int) {
+// TerminalWidth returns the current width of the terminal.
+func TerminalWidth() (width int) {
 	ws := &winsize{}
 	_, _, errorNbr := syscall.Syscall(
 		syscall.SYS_IOCTL,

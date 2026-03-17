@@ -7,27 +7,28 @@ import (
 )
 
 func Right(text, subStr, color string) string {
-	terminalW := terminalWidth()
+	terminalW := TerminalWidth()
 	var b strings.Builder
 
 	newlineRe := regexp.MustCompile(regexp.QuoteMeta("\n"))
 	newlinePositions := newlineRe.FindAllStringIndex(text, -1)
+	if len(newlinePositions) > 0 {
+		newlinePositions = append(newlinePositions,
+			[]int{newlinePositions[len(newlinePositions)-1][1], len(text)})
+	} else {
+		newlinePositions = [][]int{{0, len(text)}}
+	}
 	previousIndex := 0
+	paintTextArt := paint.CommissionPainter(text, subStr, color)
 	for _, position := range newlinePositions {
 		line := text[previousIndex:position[1]]
 		// The -1 is to stop the terminal from wraping the text when printing
 		// reaches the end of the terminal. That is, characters should not be
 		// printed at the exact end of the terminal.
-		rightShiftSize := terminalW - getStringArtWidth(line) - 1
-		coloredLineArt := paint.PaintSubstring(text, subStr, color, previousIndex, position[1])
-		if previousIndex == 0 {
-			coloredLineArt = coloredLineArt[7:]
-		}
+		rightShiftSize := terminalW - GetStringArtWidth(line) - 1
+		coloredLineArt := paintTextArt(previousIndex, position[1])
 		b.WriteString(rightShiftArtSegment(coloredLineArt, rightShiftSize))
 		previousIndex = position[1]
 	}
-	rightShiftSize := terminalW - getStringArtWidth(text[previousIndex:]) - 1
-	coloredLineArt := paint.PaintSubstring(text, subStr, color, previousIndex, len(text))
-	b.WriteString(rightShiftArtSegment(coloredLineArt, rightShiftSize))
 	return b.String()
 }

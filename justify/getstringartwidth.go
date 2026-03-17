@@ -2,11 +2,11 @@ package justify
 
 import "asciiart/banners"
 
-// getStringArtWidth finds the width of the art of the passed
+// GetStringArtWidth finds the width of the art of the passed
 // string.
 //
 // Note: It will panic if a non Printable ASCII character is passed to it.
-func getStringArtWidth(str string) (width int) {
+func GetStringArtWidth(str string) (width int) {
 	for _, char := range str {
 		if char >= 32 && char < 127 || char == '\n' {
 			if char == '\n' {

@@ -8,7 +8,7 @@ import (
 )
 
 func TestGetStringArtWidth(t *testing.T) {
-	const functionName = "getStringArtWidth"
+	const functionName = "GetStringArtWidth"
 	type record struct {
 		testParameters struct {
 			text string
@@ -34,7 +34,7 @@ func TestGetStringArtWidth(t *testing.T) {
 	banners.SetBannerLineIndex()
 
 	for _, test := range tests {
-		result := getStringArtWidth(
+		result := GetStringArtWidth(
 			test.testParameters.text,
 		)
 		if result != test.want {
