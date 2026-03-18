@@ -1,6 +1,6 @@
-// Package justify provides tools for justifying/arranging/aligning
-// the art of a text on the terminal.
-package justify
+// Package measure provides tools for measuring the width
+// of art and the terminal.
+package measure
 
 import (
 	"syscall"

@@ -1,6 +1,7 @@
 package art
 
 import (
+	"asciiart/oversabi"
 	"strconv"
 	"strings"
 )
@@ -17,6 +18,7 @@ import (
 //
 // to replace all \n occurences with newlines.
 func CommissionArtist(text string) (drawTextArt func(start, stop int) string) {
+	text = oversabi.Wrap(text) // For optionally wrapping the text
 	const (
 		moveUp7  = "\033[7A"
 		moveDown = "\033[B"

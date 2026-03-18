@@ -1,4 +1,4 @@
-package justify
+package measure
 
 import (
 	"asciiart/banners"

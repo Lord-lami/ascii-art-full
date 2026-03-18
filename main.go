@@ -3,74 +3,105 @@ package main
 import (
 	"asciiart/banners"
 	"asciiart/justify"
+	"asciiart/paint"
+	"flag"
 	"fmt"
+	"log"
+	"os"
+	"strings"
 )
 
-// func main() {
-// 	usage := `Usage: go run . [OPTION] [STRING]
-
-// EX: go run . --color=<color> <substring to be colored> "something"`
-// 	// Patch for --color usage
-// 	if len(os.Args) > 1 && (os.Args[1] == "--color" || os.Args[1] == "-color") {
-// 		log.Fatal(usage)
-// 	}
-// 	color := flag.String("color", "default0", usage)
-// 	flag.Parse()
-// 	args := flag.Args()
-
-// 	subStr := ""
-// 	str := ""
-// 	switch {
-// 	// If a style is specified
-// 	case len(args) > 2 || (*color == "default0" && len(args) == 2):
-// 		bannerFileName := args[len(args)-1]
-// 		bannerFilePath := "./banners/" + bannerFileName + ".txt"
-// 		// Check that a file for it exists and set it.
-// 		var err error
-// 		if banners.BannerFile, err = os.Open(bannerFilePath); err != nil {
-// 			log.Fatal("there is no " + bannerFileName + " banner style file")
-// 		}
-// 		fallthrough
-// 	// Substring was provided
-// 	case len(args) == 2:
-// 		if *color == "default0" {
-// 			str = args[0]
-// 			break
-// 		}
-// 		subStr = args[0]
-// 		str = args[1]
-// 	// Substring was NOT provided
-// 	case len(args) == 1:
-// 		str = args[0]
-// 	// No arguments
-// 	case len(args) < 1:
-// 		log.Fatal("there is no text to draw")
-// 	}
-
-// 	if str == "" {
-// 		return
-// 	}
-
-// 	if str == "\\n" {
-// 		fmt.Println()
-// 		return
-// 	}
-
-// 	defer banners.BannerFile.Close()
-// 	banners.SetBannerLineIndex()
-// 	str = strings.ReplaceAll(str, "\\n", "\n")
-// 	coloredTextArt := paint.PaintSubstring(str, subStr, *color, 0, len(str))
-// 	if coloredTextArt == "" {
-// 		log.Fatal("color must be one of: black, red, green, yellow, blue, magenta, cyan, white, default")
-// 	}
-// 	fmt.Println(coloredTextArt)
-// }
-
 func main() {
+	colorUsage := `Usage: go run . [OPTION] [STRING]
+
+EX: go run . --color=<color> <substring to be colored> "something"`
+	alignUsage := `Usage: go run . [OPTION] [STRING] [BANNER]
+
+Example: go run . --align=right something standard`
+	color := flag.String("color", "default0", colorUsage)
+	align := flag.String("align", "left", alignUsage)
+	flag.Parse()
+	// Patch for using flags without =
+	for i := range flag.NFlag() {
+		flagNames := [2]string{"--color", "--align"}
+		for _, flagName := range flagNames {
+			if os.Args[i+1] == flagName || os.Args[i+1] == flagName[1:] {
+				flag.Usage()
+				os.Exit(1)
+			}
+		}
+	}
+
+	args := flag.Args()
+
+	subStr := ""
+	str := ""
+	switch {
+	// If a style is specified
+	case len(args) > 2 || (*color == "default0" && len(args) == 2):
+		bannerFileName := args[len(args)-1]
+		bannerFilePath := "./banners/" + bannerFileName + ".txt"
+		// Check that a file for it exists and set it.
+		var err error
+		if banners.BannerFile, err = os.Open(bannerFilePath); err != nil {
+			log.Fatal("there is no " + bannerFileName + " banner style file")
+		}
+		fallthrough
+	// Substring was provided
+	case len(args) == 2:
+		if *color == "default0" {
+			str = args[0]
+			break
+		}
+		subStr = args[0]
+		str = args[1]
+	// Substring was NOT provided
+	case len(args) == 1:
+		str = args[0]
+	// No arguments
+	case len(args) < 1:
+		log.Fatal("there is no text to draw")
+	}
+
+	if str == "" {
+		return
+	}
+
+	if str == "\\n" {
+		fmt.Println()
+		return
+	}
+	// Set up
 	defer banners.BannerFile.Close()
 	banners.SetBannerLineIndex()
-	paintTextArt := justify.Justify("T e tr st\nthe Oratge tree", "t", "Blue")
-	fmt.Println(paintTextArt)
-	// fmt.Println(paintTextArt(0, 10))
-	// fmt.Println(paintTextArt(9, 25))
+	str = strings.ReplaceAll(str, "\\n", "\n")
+
+	alignedColoredTextArt := ""
+	side := strings.ToLower(*align)
+	switch side {
+	case "left":
+
+		alignedColoredTextArt = paint.CommissionPainter(str, subStr, *color)(0, len(str))
+	case "right":
+		alignedColoredTextArt = justify.Right(str, subStr, *color)
+	case "center":
+		alignedColoredTextArt = justify.Center(str, subStr, *color)
+	case "justify":
+		alignedColoredTextArt = justify.Justify(str, subStr, *color)
+	default:
+		log.Fatal("align must be one of: left, right, center and justify")
+	}
+
+	fmt.Println(alignedColoredTextArt)
 }
+
+// func main() {
+// 	defer banners.BannerFile.Close()
+// 	banners.SetBannerLineIndex()
+// 	inputText := "TfeftrfstfthefOran tree"
+// 	fmt.Println(inputText)
+// 	paintedTextArt := paint.CommissionPainter(inputText, "t", "Blue")(0, len(inputText))
+// 	fmt.Println(paintedTextArt)
+// 	// fmt.Println(paintTextArt(0, 10))
+// 	// fmt.Println(paintTextArt(9, 25))
+// }

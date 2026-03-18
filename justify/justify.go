@@ -1,13 +1,19 @@
 package justify
 
 import (
+	"asciiart/measure"
 	"asciiart/paint"
 	"regexp"
 	"strings"
 )
 
+// Justify takes in text, subStr and color strings
+// it returns the painted art of the text, with
+// the art justified to justify (each line's 
+// words are equally spaced and spread out from 
+// the beginning to the end of the terminal).
 func Justify(text, subStr, color string) string {
-	terminalW := TerminalWidth()
+	terminalW := measure.TerminalWidth()
 	var b strings.Builder
 
 	newlineRe := regexp.MustCompile(regexp.QuoteMeta("\n"))
@@ -26,9 +32,11 @@ func Justify(text, subStr, color string) string {
 		shiftablePositions := shiftableRe.FindAllStringIndex(line, -1)
 		numberOfShiftables := len(shiftablePositions)
 		if numberOfShiftables == 0 {
-			panic("left align not implemented")
+			coloredLineArt := paintTextArt(previousIndex, nlPosition[1])
+			b.WriteString(coloredLineArt)
+			continue
 		}
-		spaceSize := (terminalW - GetStringArtWidth(line))
+		spaceSize := (terminalW - measure.GetStringArtWidth(line))
 		rightShiftSize := spaceSize / numberOfShiftables
 		coloredLineArt := paintTextArt(previousIndex, previousIndex+shiftablePositions[0][0])
 		b.WriteString(coloredLineArt)

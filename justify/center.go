@@ -1,14 +1,18 @@
 package justify
 
 import (
+	"asciiart/measure"
 	"asciiart/paint"
 	"fmt"
 	"regexp"
 	"strings"
 )
 
+// Center takes in text, subStr and color strings
+// it returns the painted art of the text with
+// the art justified to the center of the terminal.
 func Center(text, subStr, color string) string {
-	terminalW := TerminalWidth()
+	terminalW := measure.TerminalWidth()
 	var b strings.Builder
 
 	newlineRe := regexp.MustCompile(regexp.QuoteMeta("\n"))
@@ -23,9 +27,9 @@ func Center(text, subStr, color string) string {
 	previousIndex := 0
 	paintTextArt := paint.CommissionPainter(text, subStr, color)
 	for _, position := range newlinePositions {
-		
+
 		line := text[previousIndex:position[1]]
-		rightShiftSize := (terminalW - GetStringArtWidth(line)) / 2
+		rightShiftSize := (terminalW - measure.GetStringArtWidth(line)) / 2
 		coloredLineArt := paintTextArt(previousIndex, position[1])
 		b.WriteString(rightShiftArtSegment(coloredLineArt, rightShiftSize))
 		previousIndex = position[1]
