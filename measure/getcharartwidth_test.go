@@ -7,11 +7,11 @@ import (
 	"testing"
 )
 
-func TestGetStringArtWidth(t *testing.T) {
-	const functionName = "GetStringArtWidth"
+func TestGetCharArtWidth(t *testing.T) {
+	const functionName = "GetCharArtWidth"
 	type record struct {
 		testParameters struct {
-			text string
+			char byte
 		}
 		want int
 	}
@@ -19,8 +19,8 @@ func TestGetStringArtWidth(t *testing.T) {
 	test := record{}
 
 	// 1st test parameters
-	test.testParameters.text = "Test"
-	test.want = 29
+	test.testParameters.char = 'T'
+	test.want = 10
 	tests = append(tests, test)
 
 	// Setup
@@ -34,8 +34,8 @@ func TestGetStringArtWidth(t *testing.T) {
 	banners.SetBannerLineIndex()
 
 	for _, test := range tests {
-		result := GetStringArtWidth(
-			test.testParameters.text,
+		result := GetCharArtWidth(
+			test.testParameters.char,
 		)
 		if result != test.want {
 			t.Errorf("%v(%v) = %d want %d",

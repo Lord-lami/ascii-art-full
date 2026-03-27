@@ -1,8 +1,8 @@
 package main
 
 import (
+	"asciiart/art"
 	"asciiart/banners"
-	"asciiart/justify"
 	"asciiart/paint"
 	"flag"
 	"fmt"
@@ -76,23 +76,9 @@ Example: go run . --align=right something standard`
 	banners.SetBannerLineIndex()
 	str = strings.ReplaceAll(str, "\\n", "\n")
 
-	alignedColoredTextArt := ""
-	side := strings.ToLower(*align)
-	switch side {
-	case "left":
-
-		alignedColoredTextArt = paint.CommissionPainter(str, subStr, *color)(0, len(str))
-	case "right":
-		alignedColoredTextArt = justify.Right(str, subStr, *color)
-	case "center":
-		alignedColoredTextArt = justify.Center(str, subStr, *color)
-	case "justify":
-		alignedColoredTextArt = justify.Justify(str, subStr, *color)
-	default:
-		log.Fatal("align must be one of: left, right, center and justify")
-	}
-
-	fmt.Println(alignedColoredTextArt)
+	//Draw, Paint, Wrap and Align
+	brush := paint.Brush(*color)
+	fmt.Println(art.DrawPaintWrapAlignTextArt(str, subStr, brush, *align))
 }
 
 // func main() {

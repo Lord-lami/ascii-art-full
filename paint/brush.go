@@ -2,12 +2,12 @@ package paint
 
 import "strings"
 
-// brush accepts a color string.
+// Brush accepts a color string.
 // The color string must be one of: black, red, green, yellow, blue, magenta, cyan, white, default.
 //
 // It returns an ANSI Control Sequence that changes the color of the following text to the color
 // specified by the string.
-func brush(color string) string {
+func Brush(color string) string {
 	color = strings.ToLower(color)
 	colorBrush := "\033["
 	switch color {

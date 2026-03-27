@@ -48,7 +48,7 @@ func TestDrawCharArt(t *testing.T) {
 			t.Errorf("%v(%v) = %q want %q",
 				functionName, test.testParameters, result, test.want)
 		} else {
-			t.Logf("Passed: %v(%v) = %q",
+			t.Logf("Passed: %v(%v) = \n%s\n",
 				functionName, test.testParameters, result)
 		}
 	}

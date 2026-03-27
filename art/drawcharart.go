@@ -7,12 +7,17 @@ import (
 
 // drawCharArt draws the art of a character, char
 // from banner file:
+//
 //	banners.BannerFile
-// and returns the art as a slice of [byte] and the 
+//
+// and returns the art as a slice of [byte] and the
 // width of the art as an [int]
 func drawCharArt(char byte) ([]byte, int) {
 	if char == '\n' {
 		return []byte{'\n'}, 0
+	}
+	if char < 32 || char >= 127 {
+		panic("invalid ASCII character: " + string(char))
 	}
 	charIndex := int(char - 32)
 	bannerLinePosition := 1 + charIndex*9
