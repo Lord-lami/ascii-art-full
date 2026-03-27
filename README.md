@@ -14,7 +14,7 @@ Making it wrap the text when the art is wider than the terminal was a great chal
 I hope to be able to make this program the starting point for a deterministic image generator.
 
 ## Installation
-- `git clone https://acad.learn2earn.ng/git/oifaraji/my-ascii-art-justify.git`
+- `git clone https://github.com/Lord-lami/ascii-art-full.git`
 
 ## Usage
 - Change directory to the `my-ascii-art-justify` folder
