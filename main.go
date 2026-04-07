@@ -78,7 +78,7 @@ Example: go run . --align=right something standard`
 
 	//Draw, Paint, Wrap and Align
 	brush := paint.Brush(*color)
-	fmt.Println(art.DrawPaintWrapAlignTextArt(str, subStr, brush, *align))
+	fmt.Printf("%q", art.DrawPaintWrapAlignTextArt(str, subStr, brush, *align))
 }
 
 // func main() {

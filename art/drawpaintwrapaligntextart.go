@@ -2,9 +2,11 @@ package art
 
 import (
 	"asciiart/measure"
+	"bytes"
+	"fmt"
 	"regexp"
-	"strconv"
 	"strings"
+	"text/template"
 )
 
 // DrawPaintWrapAlignTextArt takes a text string and returns
@@ -22,30 +24,45 @@ func DrawPaintWrapAlignTextArt(text, subStr, brush, alignment string) string {
 	subStrRe := regexp.MustCompile(regexp.QuoteMeta(subStr))
 	paintPositions := subStrRe.FindAllStringIndex(text, -1)
 	lineArtWidth := 0
-	const (
-		moveUp7  = "\033[7A"
-		moveDown = "\033[B"
-	)
+
 	var b strings.Builder
 	wordSpace := ""
+	lineSpace := ""
 	totalLineSpaces := 0
 	lineSpacesSeen := 0
+	lineArtTemplate := template.New("")
+	multiply := func(a, b int) int {
+		return a * b
+	}
+	lineArtTemplate.Funcs(template.FuncMap{"multiply": multiply})
+	_, err := lineArtTemplate.ParseFiles("art/text-templates/art.txt")
+	if err != nil {
+		panic(err)
+	}
 
-	for i, char := range text {
+	var lineArtForm struct {
+		LineArt      []byte
+		LineArtWidth int
+		CharArt      []byte
+		CharArtWidth int
+		Brush        string
+		Reset        string
+		LineSpace    string
+		WordSpace    string
+	}
+	for i, char := range text + "\n" {
 		charArt, charArtWidth := drawCharArt(byte(char))
-		charArtStr := string(charArt)
-
-		if lineArtWidth+charArtWidth >= terminalWidth || charArtStr == "\n" {
+		if lineArtWidth+charArtWidth >= terminalWidth {
+			var ArtBuilder bytes.Buffer
+			lineArtForm.CharArt = []byte{'\n', '\n', '\n', '\n', '\n', '\n', '\n', '\n'}
+			lineArtForm.CharArtWidth = 1
+			lineArtTemplate.ExecuteTemplate(&ArtBuilder, "art.txt", lineArtForm)
+			lineArtForm.LineArt = ArtBuilder.Bytes()
+			b.WriteString(lineSpace)
+			b.Write(lineArtForm.LineArt)
+			lineArtForm.LineArt = []byte{}
+			lineArtForm.LineArtWidth = 0
 			lineArtWidth = 0
-		}
-
-		if charArtStr != "\n" {
-			if lineArtWidth == 0 {
-				b.Write([]byte{'\n', '\n', '\n', '\n', '\n', '\n', '\n'})
-			}
-			b.WriteString(moveUp7)
-			moveBackCAL := "\033[" + strconv.Itoa(charArtWidth) + "D"
-			charArtStr = strings.Replace(charArtStr, "\n", moveDown+moveBackCAL, 7)
 		}
 
 		// Aligning
@@ -63,12 +80,10 @@ func DrawPaintWrapAlignTextArt(text, subStr, brush, alignment string) string {
 			case "left":
 			case "right":
 				shiftSize := terminalWidth - nextLineArtWidth - 1
-				lineSpace := strings.Repeat(" ", shiftSize)
-				b.WriteString(lineSpace)
+				lineSpace = strings.Repeat(" ", shiftSize)
 			case "center":
 				shiftSize := (terminalWidth - nextLineArtWidth) / 2
-				lineSpace := strings.Repeat(" ", shiftSize)
-				b.WriteString(lineSpace)
+				lineSpace = strings.Repeat(" ", shiftSize)
 			case "justify":
 				totalLineSpaces = max(strings.Count(text[i:i+j], " "), 1)
 				lineSpacesSeen = 0
@@ -81,26 +96,47 @@ func DrawPaintWrapAlignTextArt(text, subStr, brush, alignment string) string {
 		}
 
 		// Painting
-		if len(paintPositions) > 0 && i == paintPositions[0][1] {
-			b.WriteString("\033[0m")
-			paintPositions = paintPositions[1:]
-		}
-		if len(paintPositions) > 0 && i == paintPositions[0][0] {
-			b.WriteString(brush)
+		if brush != "" {
+			fmt.Println(paintPositions)
+			if len(paintPositions) > 0 && i == paintPositions[0][1] {
+				lineArtForm.Reset = "\033[0m"
+				paintPositions = paintPositions[1:]
+			}
+			if len(paintPositions) > 0 && i == paintPositions[0][0] {
+				lineArtForm.Brush = brush
+			}
 		}
 
 		// Drawing
-		b.WriteString(charArtStr)
-		lineArtWidth += charArtWidth
-
-		// Stop coloring if we're at the
-		// end of the text and still coloring
-		if len(paintPositions) > 0 &&
-			i == len(text)-1 &&
-			paintPositions[0][1] == len(text) {
-			b.WriteString("\033[0m")
-			paintPositions = paintPositions[1:]
+		if char == '\n' && len(lineArtForm.LineArt) == 0 ||
+			len(lineArtForm.LineArt) > 0 &&
+				lineArtForm.LineArt[len(lineArtForm.LineArt)-1] == '\n' {
+			lineArtForm.LineArt = append(lineArtForm.LineArt, '\n')
+		} else {
+			var ArtBuilder bytes.Buffer
+			lineArtForm.CharArt = charArt
+			lineArtForm.CharArtWidth = charArtWidth
+			lineArtTemplate.ExecuteTemplate(&ArtBuilder, "art.txt", lineArtForm)
+			lineArtForm.LineArt = ArtBuilder.Bytes()
+			lineArtForm.LineArtWidth += charArtWidth
+			fmt.Println(lineArtForm.LineArtWidth)
+			lineArtWidth += charArtWidth
 		}
+		lineArtForm.Brush = ""
+		lineArtForm.Reset = ""
+
+		// Drawing
+		// b.WriteString(charArtStr)
+		// lineArtWidth += charArtWidth
+
+		// if i == len(text)-1 {
+		// 	// Stop coloring if we're at the
+		// 	// end of the text and still coloring
+		// 	if len(paintPositions) > 0 && paintPositions[0][1] == len(text) {
+		// 		lineArtForm.LineArt = append(lineArtForm.LineArt, []byte("\033[0m")...)
+		// 		paintPositions = paintPositions[1:]
+		// 	}
+		// }
 
 		// Aligning
 		if totalLineSpaces > 0 && char == ' ' {
@@ -109,7 +145,15 @@ func DrawPaintWrapAlignTextArt(text, subStr, brush, alignment string) string {
 
 				wordSpace = wordSpace[1:]
 			}
-			b.WriteString(wordSpace)
+			lineArtForm.LineArt = append(lineArtForm.LineArt, []byte(wordSpace)...)
+		}
+
+		if char == '\n' {
+			b.WriteString(lineSpace)
+			b.Write(lineArtForm.LineArt)
+			lineArtForm.LineArt = []byte{}
+			lineArtForm.LineArtWidth = 0
+			lineArtWidth = 0
 		}
 	}
 	return b.String()

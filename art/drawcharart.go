@@ -14,7 +14,7 @@ import (
 // width of the art as an [int]
 func drawCharArt(char byte) ([]byte, int) {
 	if char == '\n' {
-		return []byte{'\n'}, 0
+		return []byte{'\n', '\n', '\n', '\n', '\n', '\n', '\n', '\n'}, 1
 	}
 	if char < 32 || char >= 127 {
 		panic("invalid ASCII character: " + string(char))
@@ -23,7 +23,7 @@ func drawCharArt(char byte) ([]byte, int) {
 	bannerLinePosition := 1 + charIndex*9
 	charArt := []byte{}
 	charArtLength := banners.BannerLineIndex[bannerLinePosition+1] -
-		banners.BannerLineIndex[bannerLinePosition]
+		banners.BannerLineIndex[bannerLinePosition] - 1
 	for range 8 {
 		offset := banners.BannerLineIndex[bannerLinePosition]
 		rowArt := make([]byte, charArtLength)
@@ -34,5 +34,5 @@ func drawCharArt(char byte) ([]byte, int) {
 		charArt = append(charArt, rowArt...)
 		bannerLinePosition++
 	}
-	return charArt[:len(charArt)-1], int(charArtLength - 1)
+	return charArt, int(charArtLength)
 }
