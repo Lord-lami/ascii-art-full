@@ -1,8 +1,0 @@
-{{.LineSpace}}{{slice (printf "%s" .LineArt) 0 .LineArtWidth}}{{.Brush}}{{slice (printf "%s" .CharArt) 0 .CharArtWidth}}{{.WordSpace -}}
-{{.LineSpace}}{{- slice (printf "%s" .LineArt) .LineArtWidth (multiply 2 .LineArtWidth)}}{{slice (printf "%s" .CharArt) .CharArtWidth (multiply 2 .CharArtWidth)}}{{.WordSpace -}}
-{{.LineSpace}}{{- slice (printf "%s" .LineArt) (multiply 2 .LineArtWidth) (multiply 3 .LineArtWidth)}}{{slice (printf "%s" .CharArt) (multiply 2 .CharArtWidth) (multiply 3 .CharArtWidth)}}{{.WordSpace -}}
-{{.LineSpace}}{{- slice (printf "%s" .LineArt) (multiply 3 .LineArtWidth) (multiply 4 .LineArtWidth)}}{{slice (printf "%s" .CharArt) (multiply 3 .CharArtWidth) (multiply 4 .CharArtWidth)}}{{.WordSpace -}}
-{{.LineSpace}}{{- slice (printf "%s" .LineArt) (multiply 4 .LineArtWidth) (multiply 5 .LineArtWidth)}}{{slice (printf "%s" .CharArt) (multiply 4 .CharArtWidth) (multiply 5 .CharArtWidth)}}{{.WordSpace -}}
-{{.LineSpace}}{{- slice (printf "%s" .LineArt) (multiply 5 .LineArtWidth) (multiply 6 .LineArtWidth)}}{{slice (printf "%s" .CharArt) (multiply 5 .CharArtWidth) (multiply 6 .CharArtWidth)}}{{.WordSpace -}}
-{{.LineSpace}}{{- slice (printf "%s" .LineArt) (multiply 6 .LineArtWidth) (multiply 7 .LineArtWidth)}}{{slice (printf "%s" .CharArt) (multiply 6 .CharArtWidth) (multiply 7 .CharArtWidth)}}{{.WordSpace -}}
-{{.LineSpace}}{{- slice (printf "%s" .LineArt) (multiply 7 .LineArtWidth)}}{{slice (printf "%s" .CharArt) (multiply 7 .CharArtWidth) (multiply 8 .CharArtWidth)}}{{.WordSpace}}{{.Reset}}
