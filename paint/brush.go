@@ -27,8 +27,10 @@ func Brush(color string) string {
 		return colorBrush + "36m"
 	case "white":
 		return colorBrush + "37m"
-	case "default", "default0":
+	case "default":
 		return colorBrush + "39m"
+	case "default0":
+		return ""
 	default:
 		panic("color must be one of: black, red, green, yellow, blue, magenta, cyan, white, default")
 	}
