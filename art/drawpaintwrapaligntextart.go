@@ -3,10 +3,16 @@ package art
 import (
 	"asciiart/measure"
 	"bytes"
+	"embed"
 	"regexp"
 	"strings"
 	"text/template"
 )
+
+// Embedding
+//
+//go:embed lineart.tmpl
+var templateFS embed.FS
 
 // DrawPaintWrapAlignTextArt takes a text string and returns
 // the art of a text from start index to stop index (half open range).
@@ -14,6 +20,12 @@ import (
 // Note: the strings that are passed will have all `\n`s`
 // replaced by newline characters.
 func DrawPaintWrapAlignTextArt(text, subStr, brush, alignment string) string {
+	// Production
+	lineArtTmpl, err := template.ParseFS(templateFS, "lineart.tmpl")
+
+	// Development
+	// lineArtTmpl, err := template.New("").ParseFiles("art/lineart.tmpl")
+
 	terminalWidth := measure.TerminalWidth(text)
 
 	if subStr == "" {
@@ -45,18 +57,6 @@ func DrawPaintWrapAlignTextArt(text, subStr, brush, alignment string) string {
 	// Start Newline
 	lineArtForm.LineArt = make([]string, 8)
 
-	// Production
-	lineArtTmpl, err := template.New("").Parse(`{{.LineSpace}}{{printf "%s" (index .LineArt 0)}}{{.Brush}}{{printf "%s" (index .CharArt 0)}}{{.Reset}}{{.WordSpace}}
-{{.LineSpace}}{{printf "%s" (index .LineArt 1)}}{{.Brush}}{{printf "%s" (index .CharArt 1)}}{{.Reset}}{{.WordSpace}}
-{{.LineSpace}}{{printf "%s" (index .LineArt 2)}}{{.Brush}}{{printf "%s" (index .CharArt 2)}}{{.Reset}}{{.WordSpace}}
-{{.LineSpace}}{{printf "%s" (index .LineArt 3)}}{{.Brush}}{{printf "%s" (index .CharArt 3)}}{{.Reset}}{{.WordSpace}}
-{{.LineSpace}}{{printf "%s" (index .LineArt 4)}}{{.Brush}}{{printf "%s" (index .CharArt 4)}}{{.Reset}}{{.WordSpace}}
-{{.LineSpace}}{{printf "%s" (index .LineArt 5)}}{{.Brush}}{{printf "%s" (index .CharArt 5)}}{{.Reset}}{{.WordSpace}}
-{{.LineSpace}}{{printf "%s" (index .LineArt 6)}}{{.Brush}}{{printf "%s" (index .CharArt 6)}}{{.Reset}}{{.WordSpace}}
-{{.LineSpace}}{{printf "%s" (index .LineArt 7)}}{{.Brush}}{{printf "%s" (index .CharArt 7)}}{{.Reset}}{{.WordSpace}}`)
-
-	// Development
-	// lineArtTmpl, err := template.New("").ParseFiles("art/lineart.tmpl")
 	if err != nil {
 		panic(err)
 	}
