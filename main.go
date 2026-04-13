@@ -3,7 +3,6 @@ package main
 import (
 	"asciiart/art"
 	"asciiart/banners"
-	"asciiart/paint"
 	"flag"
 	"fmt"
 	"log"
@@ -89,6 +88,5 @@ EX: go run . --output=<fileName.txt> something standard`
 	}
 
 	//Draw, Paint, Wrap and Align
-	brush := paint.Brush(*color)
-	fmt.Fprintf(outputFile, "%s", art.DrawPaintWrapAlignTextArt(str, subStr, brush, *align))
+	fmt.Fprintf(outputFile, "%s", art.DrawPaintWrapAlignTextArt(str, subStr, *color, *align))
 }

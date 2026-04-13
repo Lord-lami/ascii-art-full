@@ -2,6 +2,7 @@ package art
 
 import (
 	"asciiart/measure"
+	"asciiart/paint"
 	"bytes"
 	"embed"
 	"regexp"
@@ -19,7 +20,7 @@ var templateFS embed.FS
 //
 // Note: the strings that are passed will have all `\n`s`
 // replaced by newline characters.
-func DrawPaintWrapAlignTextArt(text, subStr, brush, alignment string) string {
+func DrawPaintWrapAlignTextArt(text, subStr, color, alignment string) string {
 	// Production
 	lineArtTmpl, err := template.ParseFS(templateFS, "lineart.tmpl")
 
@@ -27,6 +28,7 @@ func DrawPaintWrapAlignTextArt(text, subStr, brush, alignment string) string {
 	// lineArtTmpl, err := template.New("").ParseFiles("art/lineart.tmpl")
 
 	terminalWidth := measure.TerminalWidth(text)
+	brush, reset := paint.Brush(color)
 
 	if subStr == "" {
 		subStr = text
@@ -120,7 +122,7 @@ func DrawPaintWrapAlignTextArt(text, subStr, brush, alignment string) string {
 		// Painting
 		if len(paintPositions) > 0 && i == paintPositions[0][0] {
 			lineArtForm.Brush = brush
-			lineArtForm.Reset = "\033[0m"
+			lineArtForm.Reset = reset
 
 		} else if len(paintPositions) > 0 && i == paintPositions[0][1] {
 			lineArtForm.Brush = ""
