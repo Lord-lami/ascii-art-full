@@ -11,18 +11,22 @@ import (
 )
 
 func main() {
-	colorUsage := `Usage: go run . [OPTION] [STRING]
+	colorUsage := `Usage: go run . [OPTION] [STRING] [BANNER]
 
 EX: go run . --color=<color> <substring to be colored> "something"`
 	alignUsage := `Usage: go run . [OPTION] [STRING] [BANNER]
 
 Example: go run . --align=right something standard`
+	outputFileNameUsage := `Usage: go run . [OPTION] [STRING] [BANNER]
+
+EX: go run . --output=<fileName.txt> something standard`
 	color := flag.String("color", "default0", colorUsage)
 	align := flag.String("align", "left", alignUsage)
+	outputFileName := flag.String("output", "", outputFileNameUsage)
 	flag.Parse()
 	// Patch for using flags without =
 	for i := range flag.NFlag() {
-		flagNames := [2]string{"--color", "--align"}
+		flagNames := [3]string{"--color", "--align", "--output"}
 		for _, flagName := range flagNames {
 			if os.Args[i+1] == flagName || os.Args[i+1] == flagName[1:] {
 				flag.Usage()
@@ -75,7 +79,16 @@ Example: go run . --align=right something standard`
 	defer banners.BannerFile.Close()
 	banners.SetBannerLineIndex()
 
+	outputFile := os.Stdout
+	if *outputFileName != "" {
+		var err error
+		outputFile, err = os.Create(*outputFileName)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
 	//Draw, Paint, Wrap and Align
 	brush := paint.Brush(*color)
-	fmt.Printf("%s", art.DrawPaintWrapAlignTextArt(str, subStr, brush, *align))
+	fmt.Fprintf(outputFile, "%s", art.DrawPaintWrapAlignTextArt(str, subStr, brush, *align))
 }
