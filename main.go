@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 )
 
 func main() {
@@ -71,23 +70,12 @@ Example: go run . --align=right something standard`
 		fmt.Println()
 		return
 	}
+
 	// Set up
 	defer banners.BannerFile.Close()
 	banners.SetBannerLineIndex()
-	str = strings.ReplaceAll(str, "\\n", "\n")
 
 	//Draw, Paint, Wrap and Align
 	brush := paint.Brush(*color)
 	fmt.Printf("%s", art.DrawPaintWrapAlignTextArt(str, subStr, brush, *align))
 }
-
-// func main() {
-// 	defer banners.BannerFile.Close()
-// 	banners.SetBannerLineIndex()
-// 	inputText := "TfeftrfstfthefOran tree"
-// 	fmt.Println(inputText)
-// 	paintedTextArt := paint.CommissionPainter(inputText, "t", "Blue")(0, len(inputText))
-// 	fmt.Println(paintedTextArt)
-// 	// fmt.Println(paintTextArt(0, 10))
-// 	// fmt.Println(paintTextArt(9, 25))
-// }

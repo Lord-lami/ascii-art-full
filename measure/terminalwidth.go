@@ -3,6 +3,7 @@
 package measure
 
 import (
+	"strings"
 	"syscall"
 	"unsafe"
 )
@@ -15,7 +16,7 @@ type winsize struct {
 }
 
 // TerminalWidth returns the current width of the terminal.
-func TerminalWidth() (width int) {
+func TerminalWidth(text string) (width int) {
 	ws := &winsize{}
 	_, _, errorNbr := syscall.Syscall(
 		syscall.SYS_IOCTL,
@@ -24,7 +25,22 @@ func TerminalWidth() (width int) {
 		uintptr(unsafe.Pointer(ws)),
 	)
 	if errorNbr != 0 {
-		panic("something is wrong with the terminal size")
+		if errorNbr == 25 {
+			return getLongestLineWidth(text)
+		}
+		panic("something is wrong with the terminal size. Error No." + errorNbr.Error())
 	}
 	return int(ws.Col)
+}
+
+func getLongestLineWidth(text string) int {
+	longestLineWidth := 0
+	for line := range strings.SplitSeq(text, "\\n") {
+		lineLength := 0
+		for _, char := range line {
+			lineLength += GetCharArtWidth(byte(char))
+		}
+		longestLineWidth = max(lineLength, longestLineWidth)
+	}
+	return longestLineWidth + 1
 }
