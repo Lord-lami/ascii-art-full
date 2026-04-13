@@ -1,5 +1,5 @@
-# ASCII Art Justify
-Ascii Art Justify is a CLI program written in Go Language that draws the ASCII art of the ASCII text you pass to it as an argument and colors the substring you can optionally provide. It also aligns the art according to the alignment you specify.
+# ASCII Art Full
+Ascii Art Fill is a CLI program written in Go Language that draws the ASCII art of the ASCII text you pass to it as an argument. It can also color and align the text on the terminal. It wraps the art if it is too long for the terminal. It can also send its output to a file if specified.
 
 It uses only the standard libraries of Go language. 
 
@@ -17,12 +17,12 @@ I hope to be able to make this program the starting point for a deterministic im
 - `git clone https://github.com/Lord-lami/ascii-art-full.git`
 
 ## Usage
-- Change directory to the `my-ascii-art-justify` folder
-- Run `./asciiart --align=<alignment> --color=<color> <substring to be colored>OPTIONAL <text to draw>` in the terminal. Option (the ones that start with `--` are optional)
+- Change directory to the `ascii-art-full` folder
+- Run `./asciiartfull --output=<filename> --align=<alignment> --color=<color> <substring to be colored>OPTIONAL <text to draw>` in the terminal. Option (the ones that start with `--` are optional)
 - To use a style other than the standard style. 
 - - Ensure that the banner file of the style is in the `banners` folder as a `.txt` file.
 - - Ensure the banner file is formatted properly as described in the project description.
-- - Run `./asciiart --align=<alignment>OPTIONAL --color=<color>OPTIONAL <substring to be colored>OPTIONAL <text to draw> <style banner file name without .txt>OPTIONAL`
+- - Run `./asciiartfull --align=<alignment>OPTIONAL --color=<color>OPTIONAL <substring to be colored>OPTIONAL <text to draw> <style banner file name without .txt>OPTIONAL`
 
 - The program gives an error when there is no text, the color is invalid or the alignment is invalid.
 - The valid colors are: black, red, green, yellow, blue, magenta, cyan, white, default
