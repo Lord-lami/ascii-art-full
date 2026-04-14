@@ -6,5 +6,5 @@ func Brush(color string) (string, string) {
 	if color == "default0" {
 		return "", ""
 	}
-	return "<span color: " + color + ">", "</span>"
+	return `<span style="color: ` + color + `;">`, `</span>`
 }
