@@ -5,7 +5,6 @@ import (
 	"asciiart/paint"
 	"bytes"
 	"embed"
-	"fmt"
 	"regexp"
 	"strings"
 	"text/template"
@@ -121,7 +120,6 @@ func DrawPaintWrapAlignTextArt(text, subStr, color, alignment string) string {
 		}
 
 		// Painting
-		fmt.Println(paintPositions)
 		if len(paintPositions) > 0 && i == paintPositions[0][0] {
 			lineArtForm.Brush = brush
 			lineArtForm.Reset = reset
