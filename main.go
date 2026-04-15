@@ -69,11 +69,6 @@ EX: go run . --output=<fileName.txt> something standard`
 		return
 	}
 
-	if str == "\\n" {
-		fmt.Println()
-		return
-	}
-
 	// Set up
 	defer banners.BannerFile.Close()
 	banners.SetBannerLineIndex()

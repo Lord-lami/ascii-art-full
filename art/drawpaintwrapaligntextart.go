@@ -16,10 +16,7 @@ import (
 var templateFS embed.FS
 
 // DrawPaintWrapAlignTextArt takes a text string and returns
-// the art of a text from start index to stop index (half open range).
-//
-// Note: the strings that are passed will have all `\n`s`
-// replaced by newline characters.
+// the art of a text.
 func DrawPaintWrapAlignTextArt(text, subStr, color, alignment string) string {
 	// Production
 	lineArtTmpl, err := template.ParseFS(templateFS, "lineart.tmpl")
