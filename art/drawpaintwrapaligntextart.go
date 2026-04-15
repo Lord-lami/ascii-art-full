@@ -33,8 +33,8 @@ func DrawPaintWrapAlignTextArt(text, subStr, color, alignment string) string {
 	if subStr == "" {
 		subStr = text
 	}
-	text = strings.ReplaceAll(text, "\\n", "\n")
-	subStr = strings.ReplaceAll(subStr, "\\n", "\n")
+	// text = strings.ReplaceAll(text, "\\n", "\n")
+	// subStr = strings.ReplaceAll(subStr, "\\n", "\n")
 
 	subStrRe := regexp.MustCompile(regexp.QuoteMeta(subStr))
 	paintPositions := subStrRe.FindAllStringIndex(text, -1)
@@ -135,7 +135,7 @@ func DrawPaintWrapAlignTextArt(text, subStr, color, alignment string) string {
 		// Aligning
 		if totalLineSpaces > 0 && char == ' ' {
 			lineSpacesSeen++
-			if lineSpacesSeen == totalLineSpaces {
+			if lineSpacesSeen == totalLineSpaces && len(wordSpace) > 0 {
 				wordSpace = wordSpace[1:]
 			}
 			lineArtForm.WordSpace = wordSpace

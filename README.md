@@ -1,20 +1,22 @@
+# Web Branch
+This branch changes the code to work for the ASCII Art Web website.
+
 # ASCII Art Full
 Ascii Art Fill is a CLI program written in Go Language that draws the ASCII art of the ASCII text you pass to it as an argument. It can also color and align the text on the terminal. It wraps the art if it is too long for the terminal. It can also send its output to a file if specified.
 
 It uses only the standard libraries of Go language. 
 
-It uses banner files that have the art for each character arranged in the order of the ASCII table and separated by a newline.
+It uses banner files that have the art for each character arranged in the order of the ASCII table and separated by a newline. Feel free to add and test your own banner files if they follow this rule.
 
 It only works for ASCII characters. Unicode characters beyond the [ASCII table](https://www.ascii-code.com/) will cause errors.
 
 Command characters apart from newlines will cause panics.
 
-Making it wrap the text when the art is wider than the terminal was a great challenge.
-
 I hope to be able to make this program the starting point for a deterministic image generator.
 
 ## Installation
 - `git clone https://github.com/Lord-lami/ascii-art-full.git`
+- `git checkout web`
 
 ## Usage
 - Change directory to the `ascii-art-full` folder
@@ -24,8 +26,7 @@ I hope to be able to make this program the starting point for a deterministic im
 - - Ensure the banner file is formatted properly as described in the project description.
 - - Run `./asciiartfull --align=<alignment>OPTIONAL --color=<color>OPTIONAL <substring to be colored>OPTIONAL <text to draw> <style banner file name without .txt>OPTIONAL`
 
-- The program gives an error when there is no text, the color is invalid or the alignment is invalid.
-- The valid colors are: black, red, green, yellow, blue, magenta, cyan, white, default
+- The program gives an error when there is no text or the alignment is invalid.
 - The valid alignments are: left, right, center, justify
 
 ## Demo

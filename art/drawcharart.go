@@ -24,7 +24,7 @@ func drawCharArt(char byte) ([]byte, int) {
 	charArt := []byte{}
 	charArtLength := banners.BannerLineIndex[bannerLinePosition+1] -
 		banners.BannerLineIndex[bannerLinePosition]
-	for range 8 {
+	for true {
 		offset := banners.BannerLineIndex[bannerLinePosition]
 		rowArt := make([]byte, charArtLength)
 		_, err := banners.BannerFile.ReadAt(rowArt, offset)
@@ -33,6 +33,10 @@ func drawCharArt(char byte) ([]byte, int) {
 		}
 		charArt = append(charArt, rowArt...)
 		bannerLinePosition++
+		if banners.BannerLineIndex[bannerLinePosition+1] -
+		banners.BannerLineIndex[bannerLinePosition] == 1 {
+			break
+		}
 	}
 	return charArt[:len(charArt)-1], int(charArtLength - 1)
 }
