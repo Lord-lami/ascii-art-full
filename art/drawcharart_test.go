@@ -11,7 +11,7 @@ func TestDrawCharArt(t *testing.T) {
 	const functionName = "drawCharArt"
 	type record struct {
 		testParameters struct {
-			char byte
+			char rune
 		}
 		want string
 	}

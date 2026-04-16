@@ -61,7 +61,7 @@ func DrawPaintWrapAlignTextArt(text, subStr, color, alignment string) string {
 	}
 
 	for i, char := range text + "\n" {
-		charArt, charArtWidth := drawCharArt(byte(char))
+		charArt, charArtWidth := drawCharArt(char)
 
 		if char != '\n' {
 			// Fill CharArt

@@ -12,7 +12,7 @@ import (
 //
 // and returns the art as a slice of [byte] and the
 // width of the art as an [int]
-func drawCharArt(char byte) ([]byte, int) {
+func drawCharArt(char rune) ([]byte, int) {
 	if char == '\n' {
 		return []byte{'\n'}, 0
 	}
